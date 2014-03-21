@@ -1,0 +1,8 @@
+{
+  "name": "ZenPrint/php-SDK",
+  "description": "SDK for Zenprint REST API",
+  "require": {
+    "php": ">=5.3.0",
+    "monolog/monolog": "1.0.*"
+  }
+}
