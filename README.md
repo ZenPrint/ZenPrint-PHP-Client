@@ -4,7 +4,7 @@ ZenPrint-PHP-Client
 ZenPrint PHP Client
 
 A php interface to interact with the ZenPrint API
-Based on the ZenPrint REST API: https://developer.zenprint.com
+Based on the ZenPrint REST API: https://developers.zenprint.com
 
 How to install the ZenPrint library
 ===================================
