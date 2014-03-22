@@ -1,4 +1,4 @@
-php-SDK
+ZenPrint-PHP-Client
 =======
 
 ZenPrint PHP Client
