@@ -57,5 +57,5 @@ $ phpunit --bootstrap tests/bootstrap.php --configuration tests/phpunit.xml test
 Developer Information
 ---------------------
 
-The ZenPrint SDK uses PHP’s autoloading feature to include classes as they’re needed. (See src/AutoLoader.php)
+The ZenPrint PHP Client uses PHP’s autoloading feature to include classes as they’re needed. (See src/AutoLoader.php)
 Note: This requires a certain file-name convention of files. The filename should be the same as the class name (with the .php extension)
