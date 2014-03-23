@@ -9,6 +9,11 @@ class ZenPrintTest extends PHPUnit_Framework_TestCase
     const OAUTH_TOKEN = 'ab3cd9j4ks73hf7g';
     const OAUTH_TOKEN_SECRET = 'xyz4992k83j47x0b';
 
+    public function setUp() 
+    {
+        $this->_zenPrint = new ZenPrint(self::OAUTH_TOKEN);
+    }
+
     /**
     * @dataProvider newErrorProvider
     * @expectedException        Exception
@@ -29,11 +34,34 @@ class ZenPrintTest extends PHPUnit_Framework_TestCase
 
     public function testOAuth2() 
     {
-        $zenPrint = new ZenPrint(
-            self::OAUTH_TOKEN
-        );
+        $zenPrint = new ZenPrint(self::OAUTH_TOKEN);
 
         $this->assertNotNull($zenPrint);
+    }
+
+    public function testGetCustomers() 
+    {
+        $this->assertTrue(method_exists($this->_zenPrint, 'getCustomers'));
+    }
+
+    public function testCreateCustomer() 
+    {
+        $this->assertTrue(method_exists($this->_zenPrint, 'createCustomer'));
+    }
+
+    public function testGetCustomer() 
+    {
+        $this->assertTrue(method_exists($this->_zenPrint, 'getCustomer'));
+    }
+
+    public function testUpdateCustomer() 
+    {
+        $this->assertTrue(method_exists($this->_zenPrint, 'updateCustomer'));
+    }
+
+    public function testDeleteCustomer() 
+    {
+        $this->assertTrue(method_exists($this->_zenPrint, 'deleteCustomer'));
     }
 
     /**

@@ -33,10 +33,38 @@ Class ZenPrint extends ZenLogger {
         $this->instantiateCustomerObject();
     }
 
+    /**
+    * ++++++++++ Customers ++++++++++
+    */
+
     public function getCustomers() 
     {
-        return $this->customersObject->getCustomers($this->getOAuthToken());
+        return $this->customersObject->getCustomers();
     }
+
+    public function createCustomer() 
+    {
+        return $this->customersObject->createCustomer(func_num_args());
+    }
+
+    public function getCustomer() 
+    {
+        return $this->customersObject->getCustomer(func_num_args());
+    }
+
+    public function updateCustomer() 
+    {
+        return $this->customersObject->updateCustomer(func_num_args());
+    }
+
+    public function deleteCustomer() 
+    {
+        return $this->customersObject->deleteCustomer();
+    }
+
+    /**
+    * ++++++++++ Private Methods ++++++++++
+    */
 
     private function getOAuthToken() {
         return $this->oAuthObject->getOAuthHash();
