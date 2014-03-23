@@ -21,12 +21,12 @@ namespace RESTful
                         }
                     }';
                     break;
-                case "customers/5":
+                case "customers/23":
                     $this->returnValue = '{
-                        "email": "dave@zenprint.com",
-                        "firstname": "Dave",
-                        "lastname": "Boyce"
-                    }';
+                            "email": "dave@zenprint.com",
+                            "firstname": "Dave",
+                            "lastname": "Boyce"
+                        }';
                     break;
             }
 
@@ -62,6 +62,17 @@ namespace RESTful
     {
 
         const OAUTH_HASH = '22';
+        const CUSTOMER_ID = 23;
+        const EMAIL = 'dave@zenprint.com';
+        const FIRST_NAME = 'Dave';
+        const LAST_NAME = 'Boyce';
+        const CUSTOMER_JSON = '{"id":23,"email":"dave@zenprint.com","firstname":"Dave","lastname":"Boyce"}';
+
+        protected $_customerArray = array ( 
+            'email' => self::EMAIL,
+            'firstname' => self::FIRST_NAME,
+            'lastname' => self::LAST_NAME
+        );
 
         public function setUp() 
         {
@@ -70,11 +81,13 @@ namespace RESTful
 
         public function testGetCustomers() 
         {
-            $response = $this->_Customers->getCustomers();
-            $this->assertEquals(count($response), 1);
-            $this->assertEquals($response[5]['email'], "nate@zenprint.com");
-            $this->assertEquals($response[5]['firstname'], "Nate");
-            $this->assertEquals($response[5]['lastname'], "Jensen");
+            $customers = $this->_Customers->getCustomers();
+            $this->assertEquals(count($customers), 1);
+            foreach ($customers as $customer) {
+                $this->assertEquals($customer->getEmail(), "nate@zenprint.com");
+                $this->assertEquals($customer->getFirstname(), "Nate");
+                $this->assertEquals($customer->getLastname(), "Jensen");
+            }
         }
 
         /**
@@ -92,12 +105,9 @@ namespace RESTful
 
         public function testGetCustomer() 
         {
-            $customerId = 5;
-            $response = $this->_Customers->getCustomer($customerId);
-            $this->assertEquals(count($response), 3);
-            $this->assertEquals($response['email'], "dave@zenprint.com");
-            $this->assertEquals($response['firstname'], "Dave");
-            $this->assertEquals($response['lastname'], "Boyce");
+            $customerId = self::CUSTOMER_ID;
+            $customer = $this->_Customers->getCustomer($customerId);
+            $this->assertEquals($customer->toJson(), self::CUSTOMER_JSON);
         }
 
         /**
@@ -115,11 +125,11 @@ namespace RESTful
 
         public function testUpdateCustomer() 
         {
-            $customerId = 5;
-            $customer = "2";
+            $customerId = self::CUSTOMER_ID;
+            $customer = new \Customer(self::CUSTOMER_ID, $this->_customerArray);
             $response = $this->_Customers->updateCustomer($customerId, $customer);
             $this->assertEquals($response['resource'], "customers/$customerId");
-            $this->assertEquals($response['data'], '"' . $customer . '"');
+            $this->assertEquals($response['data'], self::CUSTOMER_JSON);
         }
 
         /**
@@ -137,10 +147,10 @@ namespace RESTful
 
         public function testCreateCustomer() 
         {
-            $customer = "2";
+            $customer = new \Customer(self::CUSTOMER_ID, $this->_customerArray);
             $response = $this->_Customers->createCustomer($customer);
             $this->assertEquals($response['resource'], "customers");
-            $this->assertEquals($response['data'], '"' . $customer . '"');
+            $this->assertEquals($response['data'], self::CUSTOMER_JSON);
         }
 
         /**

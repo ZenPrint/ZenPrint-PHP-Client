@@ -6,42 +6,51 @@ use Assert\Assertion;
 
 Class Customers 
 {
-    private $restHandle;
+    private $resource;
+    private $customers = [];
 
     function __construct($token) 
     {
-        $this->restHandle = new RESTful('http://api.zenprint.com/api/rest/v1.0', $token);
+        $this->resource = new RESTful('http://api.zenprint.com/api/rest/v1.0', $token);
     }
 
     public function getCustomers() 
     {
-        return json_decode($this->restHandle->get('customers'), true);
+        $customers = json_decode($this->resource->get('customers'), true);
+        foreach($customers as $customerId => $customer) {
+            array_push($this->customers, new Customer($customerId, $customer));
+        }
+
+        return $this->customers;
     }
 
     public function createCustomer($customer)
     {
-        Assertion::isJsonString($customer);
-        $data = json_encode($customer);
-        return $this->restHandle->post("customers", $data);
+        Assertion::isInstanceOf($customer, 'Customer');
+        $data = $customer->toJson();
+        return $this->resource->post("customers", $data);
     }
 
     public function getCustomer($customerId)
     {
         Assertion::integer($customerId);
-        return json_decode($this->restHandle->get("customers/$customerId"), true);
+        return new Customer(
+            $customerId, 
+            json_decode($this->resource->get("customers/$customerId"), true)
+        );
     }
 
     public function updateCustomer($customerId, $customer)
     {
         Assertion::integer($customerId);
-        Assertion::isJsonString($customer);
-        $data = json_encode($customer);
-        return $this->restHandle->put("customers/$customerId", $data);
+        Assertion::isInstanceOf($customer, 'Customer');
+        $data = $customer->toJson();
+        return $this->resource->put("customers/$customerId", $data);
     }
 
     public function deleteCustomer($customerId)
     {
         Assertion::integer($customerId);
-        return $this->restHandle->delete("customers/$customerId");
+        return $this->resource->delete("customers/$customerId");
     }
 }
