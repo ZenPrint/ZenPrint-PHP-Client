@@ -161,16 +161,16 @@ namespace RESTful
         * @dataProvider integerErrorProvider
         * @expectedException        Assert\InvalidArgumentException
         */
-        public function testDeleteCustomerErrors($customerId) 
+        public function testDeleteCustomerErrors($customer) 
         {
-            $response = $this->_Customers->deleteCustomer($customerId);
+            $response = $this->_Customers->deleteCustomer($customer);
         }
 
         public function testDeleteCustomer() 
         {
-            $customerId = 5;
-            $response = $this->_Customers->deleteCustomer($customerId);
-            $this->assertEquals($response['resource'], "customers/$customerId");
+            $customer = new \Customer(self::CUSTOMER_ID, $this->_customerArray);
+            $response = $this->_Customers->deleteCustomer($customer);
+            $this->assertEquals($response['resource'], "customers/" . self::CUSTOMER_ID);
         }
 
         /**

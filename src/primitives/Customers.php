@@ -48,9 +48,9 @@ Class Customers
         return $this->resource->put("customers/$customerId", $data);
     }
 
-    public function deleteCustomer($customerId)
+    public function deleteCustomer($customer)
     {
-        Assertion::integer($customerId);
-        return $this->resource->delete("customers/$customerId");
+        Assertion::isInstanceOf($customer, 'Customer');
+        return $this->resource->delete("customers/{$customer->getId()}");
     }
 }

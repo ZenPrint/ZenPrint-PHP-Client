@@ -42,24 +42,24 @@ Class ZenPrint extends ZenLogger {
         return $this->customersObject->getCustomers();
     }
 
-    public function createCustomer() 
+    public function createCustomer($customer) 
     {
-        return $this->customersObject->createCustomer(func_num_args());
+        return $this->customersObject->createCustomer($customer);
     }
 
-    public function getCustomer() 
+    public function getCustomer($customerId) 
     {
-        return $this->customersObject->getCustomer(func_num_args());
+        return $this->customersObject->getCustomer($customerId);
     }
 
-    public function updateCustomer() 
+    public function updateCustomer($customerId, $customer) 
     {
-        return $this->customersObject->updateCustomer(func_num_args());
+        return $this->customersObject->updateCustomer($customerId, $customer);
     }
 
-    public function deleteCustomer() 
+    public function deleteCustomer($customer) 
     {
-        return $this->customersObject->deleteCustomer();
+        return $this->customersObject->deleteCustomer($customer);
     }
 
     /**
@@ -71,7 +71,7 @@ Class ZenPrint extends ZenLogger {
     }
 
     private function instantiateCustomerObject() {
-        $this->customersObject = new Customers($this->oAuthObject->getOAuthHash());
+        $this->customersObject = new Customers($this->getOAuthToken());
     }
 
     private function instantiateOAuth1Object($oAuthToken, $oAuthSecret) {
