@@ -66,7 +66,7 @@ namespace RESTful
         const EMAIL = 'dave@zenprint.com';
         const FIRST_NAME = 'Dave';
         const LAST_NAME = 'Boyce';
-        const CUSTOMER_JSON = '{"id":23,"email":"dave@zenprint.com","firstname":"Dave","lastname":"Boyce"}';
+        const CUSTOMER_JSON = '{"email":"dave@zenprint.com","firstname":"Dave","lastname":"Boyce"}';
 
         protected $_customerArray = array ( 
             'email' => self::EMAIL,
@@ -129,7 +129,7 @@ namespace RESTful
             $customer = new \Customer(self::CUSTOMER_ID, $this->_customerArray);
             $response = $this->_Customers->updateCustomer($customerId, $customer);
             $this->assertEquals($response['resource'], "customers/$customerId");
-            $this->assertEquals($response['data'], self::CUSTOMER_JSON);
+            $this->assertEquals(count($response['data']), 3);
         }
 
         /**
@@ -150,7 +150,7 @@ namespace RESTful
             $customer = new \Customer(self::CUSTOMER_ID, $this->_customerArray);
             $response = $this->_Customers->createCustomer($customer);
             $this->assertEquals($response['resource'], "customers");
-            $this->assertEquals($response['data'], self::CUSTOMER_JSON);
+            $this->assertEquals(count($response['data']), 3);
         }
 
         /**

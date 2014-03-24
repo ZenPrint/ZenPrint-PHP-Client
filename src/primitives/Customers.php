@@ -1,7 +1,6 @@
 <?php
 
 use RESTful\RESTful;
-
 use Assert\Assertion;
 
 Class Customers 
@@ -27,7 +26,7 @@ Class Customers
     public function createCustomer($customer)
     {
         Assertion::isInstanceOf($customer, 'Customer');
-        $data = $customer->toJson();
+        $data = $customer->toArray();
         return $this->resource->post("customers", $data);
     }
 
@@ -44,7 +43,7 @@ Class Customers
     {
         Assertion::integer($customerId);
         Assertion::isInstanceOf($customer, 'Customer');
-        $data = $customer->toJson();
+        $data = $customer->toArray();
         return $this->resource->put("customers/$customerId", $data);
     }
 

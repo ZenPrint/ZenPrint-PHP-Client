@@ -7,7 +7,7 @@ class CustomerPrimitiveTest extends PHPUnit_Framework_TestCase
     const FIRST_NAME = 'Dave';
     const LAST_NAME = 'Boyce';
     const CUSTOMER_ID = 22;
-    const CUSTOMER_JSON = '{"id":22,"email":"dave@zenprint.com","firstname":"Dave","lastname":"Boyce"}';
+    const CUSTOMER_JSON = '{"email":"dave@zenprint.com","firstname":"Dave","lastname":"Boyce"}';
 
     protected $_customerArray = array ( 
         'email' => self::EMAIL,
@@ -73,6 +73,14 @@ class CustomerPrimitiveTest extends PHPUnit_Framework_TestCase
     {
         $jsonResponse = $this->customer->toJson();
         $this->assertEquals($jsonResponse, self::CUSTOMER_JSON);
+    }
 
+    public function testCustomerToArray() 
+    {
+        $arrayResponse = $this->customer->toArray();
+        $this->assertEquals(count($arrayResponse), 3);
+        $this->assertEquals($arrayResponse['email'], $this->_customerArray['email']);
+        $this->assertEquals($arrayResponse['firstname'], $this->_customerArray['firstname']);
+        $this->assertEquals($arrayResponse['lastname'], $this->_customerArray['lastname']);
     }
 }

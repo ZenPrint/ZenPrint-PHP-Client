@@ -1,7 +1,6 @@
 <?php
 
 use RESTful\RESTful;
-
 use Assert\Assertion;
 
 Class Customer
@@ -14,7 +13,6 @@ Class Customer
     function __construct($customerId, $customerArray) 
     {
         $this->parseCustomer($customerId, $customerArray);
-
     }
 
     public function getId() {
@@ -51,12 +49,15 @@ Class Customer
 
     public function toJson() {
         return json_encode (
-            array (
-                'id' => $this->getId(),
-                'email' => $this->getEmail(),
-                'firstname' => $this->getFirstName(),
-                'lastname' => $this->getLastName()
-            )
+            $this->toArray()
+        );
+    }
+
+    public function toArray() {
+        return array (
+            'email' => $this->getEmail(),
+            'firstname' => $this->getFirstName(),
+            'lastname' => $this->getLastName()
         );
     }
 
