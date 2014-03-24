@@ -5,6 +5,8 @@ use Monolog\Handler\StreamHandler;
 
 Class ZenLogger 
 {
+    private $log;
+    private $loggingObj;
 
     function __construct($args) 
     {
@@ -23,7 +25,7 @@ Class ZenLogger
 
   public function addError($error) 
   {
-    $this->log->addError($erro);
+    $this->log->addError($error);
   }
 
   private function isHandlerAvailable($args) 
@@ -49,6 +51,6 @@ Class ZenLogger
   }
 
   private function getLoggerFile() {
-      $file = (isset($loggingObj['file'])) ? $loggingObj['file'] : '/tmp/zenPrint.log';
+      return (isset($loggingObj['file'])) ? $loggingObj['file'] : '/tmp/zenPrint.log';
   }
 }
