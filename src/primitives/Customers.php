@@ -16,7 +16,7 @@ Class Customers
 
     public function getCustomers() 
     {
-        $customers = json_decode($this->resource->get('customers'), true);
+        $customers = json_decode((string) $this->resource->get('customers'), true);
         foreach($customers as $customerId => $customer) {
             array_push($this->customers, new Customer($customerId, $customer));
         }
@@ -36,7 +36,7 @@ Class Customers
         Assertion::integer($customerId);
         return new Customer(
             $customerId, 
-            json_decode($this->resource->get("customers/$customerId"), true)
+            json_decode((string) $this->resource->get("customers/$customerId"), true)
         );
     }
 
