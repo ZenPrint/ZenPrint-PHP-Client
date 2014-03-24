@@ -1,5 +1,5 @@
 ZenPrint-PHP-Client
-=======
+===================
 
 ZenPrint PHP Client
 
@@ -10,7 +10,7 @@ How to install the ZenPrint library
 ===================================
 
 Composer
--------
+--------
 The ZenPrint Library uses Composer for installation (https://getcomposer.org/doc/01-basic-usage.md)
 
 ```
@@ -21,8 +21,25 @@ $ php composer.phar install
 Example Usage
 -------------
 
+Iterate through customers
 ```
-$zenprint = new ZenPrint(<oauth_token>, <oauth_token_secret>, <args>);
+$zenPrint = new ZenPrint(<oauth_token>, <oauth_token_secret>, <args>);
+
+$customers = $zenPrint->getCustomers();
+
+foreach ($customers as $customer) {
+  $customer->getFirstName();
+}
+```
+
+Create a new customer
+```
+$customer = new Customer();
+$customer->email = "customer@company.com";
+$customer->firstName = "First Name";
+$customer->lastName = "Last Name";
+
+$zenPrint->createCustomer($customer);
 ```
 
 
