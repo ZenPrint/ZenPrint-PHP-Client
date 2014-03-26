@@ -1,12 +1,12 @@
 <phpunit 
-  bootstrap="bootstrap.php"
+  bootstrap="tests/bootstrap.php"
   colors="true"
   verbose="true"
 >
    
   <testsuites>
     <testsuite name="zenprint">
-      <directory>unit</directory>
+      <directory>./tests/unit</directory>
     </testsuite>
   </testsuites>
      

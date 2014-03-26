@@ -56,19 +56,19 @@ All Tests
 ---------
 
 ```
-$ phpunit --bootstrap tests/bootstrap.php --configuration tests/phpunit.xml --testsuite zenprint
+$ phpunit 
 ```
 
 Test Groups
 -----------
 ```
-$ phpunit --bootstrap tests/bootstrap.php --configuration tests/phpunit.xml --group <groupName> 
+$ phpunit --group <groupName> 
 ```
 
 Single Test 
 -----------
 ```
-$ phpunit --bootstrap tests/bootstrap.php --configuration tests/phpunit.xml tests/unit/<file_name.php>
+$ phpunit tests/unit/<file_name.php>
 ```
 
 Developer Information
