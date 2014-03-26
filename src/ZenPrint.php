@@ -62,6 +62,11 @@ Class ZenPrint extends ZenLogger {
         return $this->customersObject->deleteCustomer($customer);
     }
 
+    public function getCustomerBalance($customerId) 
+    {
+        return $this->customersObject->getCustomerBalance($customerId);
+    }
+
     /**
     * ++++++++++ Private Methods ++++++++++
     */

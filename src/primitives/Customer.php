@@ -12,6 +12,8 @@ Class Customer
 
     function __construct($customerId, $customerArray) 
     {
+        Assertion::integer($customerId);
+        Assertion::isArray($customerArray);
         $this->parseCustomer($customerId, $customerArray);
     }
 

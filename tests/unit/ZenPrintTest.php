@@ -39,6 +39,10 @@ class ZenPrintTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($zenPrint);
     }
 
+    /**
+    * ++++++++++ Customers ++++++++++
+    */
+
     public function testGetCustomers() 
     {
         $this->assertTrue(method_exists($this->_zenPrint, 'getCustomers'));
@@ -62,6 +66,11 @@ class ZenPrintTest extends PHPUnit_Framework_TestCase
     public function testDeleteCustomer() 
     {
         $this->assertTrue(method_exists($this->_zenPrint, 'deleteCustomer'));
+    }
+
+    public function testGetCustomerBalance() 
+    {
+        $this->assertTrue(method_exists($this->_zenPrint, 'getCustomerBalance'));
     }
 
     /**

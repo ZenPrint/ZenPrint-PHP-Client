@@ -52,4 +52,12 @@ Class Customers
         Assertion::isInstanceOf($customer, 'Customer');
         return $this->resource->delete("customers/{$customer->getId()}");
     }
+
+    public function getCustomerBalance($customerId)
+    {
+        Assertion::integer($customerId);
+        return new CustomerBalance(
+            json_decode((string) $this->resource->get("customers/$customerId/balance"), true)
+        );
+    }
 }

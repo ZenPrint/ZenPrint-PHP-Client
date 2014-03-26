@@ -21,6 +21,15 @@ class CustomerPrimitiveTest extends PHPUnit_Framework_TestCase
         $this->customer = new Customer(self::CUSTOMER_ID, $this->_customerArray);
     }
 
+    /**
+    * @dataProvider integerAndArrayErrorProvider
+    * @expectedException        Assert\InvalidArgumentException
+    */
+    public function testCustomerErrors($customerId, $customerArray) 
+    {
+        new Customer($customerId, $customerArray);
+    }
+
     public function testGetCustomerId() 
     {
         $this->assertEquals($this->customer->getId(), self::CUSTOMER_ID);
@@ -82,5 +91,20 @@ class CustomerPrimitiveTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($arrayResponse['email'], $this->_customerArray['email']);
         $this->assertEquals($arrayResponse['firstname'], $this->_customerArray['firstname']);
         $this->assertEquals($arrayResponse['lastname'], $this->_customerArray['lastname']);
+    }
+
+    /**
+    * ++++++++++ Error Providers ++++++++++
+    */
+
+    public function integerAndArrayErrorProvider()
+    {
+        return array(
+          array("5", "5"),
+          array(5, 5.1),
+          array("5", []),
+          array(null, []),
+          array(5, null) 
+        );
     }
 }

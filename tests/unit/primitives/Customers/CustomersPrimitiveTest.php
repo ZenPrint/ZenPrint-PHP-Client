@@ -28,6 +28,11 @@ namespace RESTful
                             "lastname": "Boyce"
                         }';
                     break;
+                case "customers/23/balance":
+                    $this->returnValue = '{
+                            "credit_total": "101.56"
+                        }';
+                    break;
             }
 
             return $this->returnValue;
@@ -67,6 +72,7 @@ namespace RESTful
         const FIRST_NAME = 'Dave';
         const LAST_NAME = 'Boyce';
         const CUSTOMER_JSON = '{"email":"dave@zenprint.com","firstname":"Dave","lastname":"Boyce"}';
+        const CUSTOMER_BALANCE_CREDIT_TOTAL = 101.56;
 
         protected $_customerArray = array ( 
             'email' => self::EMAIL,
@@ -100,7 +106,7 @@ namespace RESTful
         */
         public function testGetCustomerErrors($customerId) 
         {
-            $response = $this->_Customers->getCustomer($customerId);
+            $this->_Customers->getCustomer($customerId);
         }
 
         public function testGetCustomer() 
@@ -163,7 +169,7 @@ namespace RESTful
         */
         public function testDeleteCustomerErrors($customer) 
         {
-            $response = $this->_Customers->deleteCustomer($customer);
+            $this->_Customers->deleteCustomer($customer);
         }
 
         public function testDeleteCustomer() 
@@ -171,6 +177,26 @@ namespace RESTful
             $customer = new \Customer(self::CUSTOMER_ID, $this->_customerArray);
             $response = $this->_Customers->deleteCustomer($customer);
             $this->assertEquals($response['resource'], "customers/" . self::CUSTOMER_ID);
+        }
+
+        /**
+        * ++++++++++ getCustomerBalance ++++++++++
+        */
+
+        /**
+        * @dataProvider integerErrorProvider
+        * @expectedException        Assert\InvalidArgumentException
+        */
+        public function testGetCustomerBalanceErrors($customerId) 
+        {
+            $this->_Customers->getCustomerBalance($customerId);
+        }
+
+        public function testGetCustomerBalance() 
+        {
+            $customerId = self::CUSTOMER_ID;
+            $customerBalance = $this->_Customers->getCustomerBalance($customerId);
+            $this->assertEquals($customerBalance->getCreditTotal(), self::CUSTOMER_BALANCE_CREDIT_TOTAL);
         }
 
         /**
@@ -187,7 +213,7 @@ namespace RESTful
               array("5"),
               array(5.1),
               array(""),
-              array(null)
+              array(null),
             );
         }
 
