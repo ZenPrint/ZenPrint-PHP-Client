@@ -28,8 +28,8 @@ Class CustomerShareBalance
     }
 
     public function setCreditsToShare($creditsToShare) {
-        //Assertion::min($creditsToShare, 0);
         Assertion::float($creditsToShare);
+        //Assertion::min($creditsToShare, 0);
         $this->creditsToShare = $creditsToShare;
     }
 
