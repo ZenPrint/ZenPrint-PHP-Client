@@ -40,7 +40,7 @@ namespace RESTful
 
         function put($resource, $data) 
         {
-            return Array(
+            return Array (
                 'resource' => $resource,
                 'data' => $data
             );
@@ -197,6 +197,28 @@ namespace RESTful
             $customerId = self::CUSTOMER_ID;
             $customerBalance = $this->_Customers->getCustomerBalance($customerId);
             $this->assertEquals($customerBalance->getCreditTotal(), self::CUSTOMER_BALANCE_CREDIT_TOTAL);
+        }
+
+        /**
+        * ++++++++++ setCustomerBalance ++++++++++
+        */
+
+        /**
+        * @dataProvider customerAndJsonErrorProvider
+        * @expectedException        Assert\InvalidArgumentException
+        */
+        public function testSetCustomerBalanceErrors($customerId, $customerShareBalance) 
+        {
+            $this->_Customers->setCustomerBalance($customerId, $customerShareBalance);
+        }
+
+        public function testSetCustomerBalance() 
+        {
+            $customerId = self::CUSTOMER_ID;
+            $customerShareBalance = new \CustomerShareBalance();
+            $response = $this->_Customers->setCustomerBalance($customerId, $customerShareBalance);
+            $this->assertEquals($response['resource'], "customers/$customerId/balance");
+            $this->assertEquals(count($response['data']), 3);
         }
 
         /**

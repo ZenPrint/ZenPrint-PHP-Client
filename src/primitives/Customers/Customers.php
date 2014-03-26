@@ -44,6 +44,9 @@ Class Customers
         Assertion::integer($customerId);
         Assertion::isInstanceOf($customer, 'Customer');
         $data = $customer->toArray();
+        /**
+        * What does it return?
+        */
         return $this->resource->put("customers/$customerId", $data);
     }
 
@@ -59,5 +62,16 @@ Class Customers
         return new CustomerBalance(
             json_decode((string) $this->resource->get("customers/$customerId/balance"), true)
         );
+    }
+
+    public function setCustomerBalance($customerId, $customerShareBalance)
+    {
+        Assertion::integer($customerId);
+        Assertion::isInstanceOf($customerShareBalance, 'CustomerShareBalance');
+        $data = $customerShareBalance->toArray();
+        /**
+        * What does it return?
+        */
+        return $this->resource->put("customers/$customerId/balance", $data);
     }
 }

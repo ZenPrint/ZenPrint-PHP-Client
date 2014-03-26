@@ -67,6 +67,11 @@ Class ZenPrint extends ZenLogger {
         return $this->customersObject->getCustomerBalance($customerId);
     }
 
+    public function setCustomerBalance($customerId, $customerShareBalance) 
+    {
+        return $this->customersObject->setCustomerBalance($customerId, $customerShareBalance);
+    }
+
     /**
     * ++++++++++ Private Methods ++++++++++
     */
