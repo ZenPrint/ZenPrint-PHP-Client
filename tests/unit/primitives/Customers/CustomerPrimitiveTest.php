@@ -126,10 +126,26 @@ class CustomerPrimitiveTest extends \PHPUnit_Framework_TestCase
         $this->customer->setCustomerShareBalance($customerShareBalance);
     }
 
+    /**
+    * @dataProvider customerShareBalanceErrorProvider
+    * @expectedException        Assert\InvalidArgumentException
+    */
+    public function testSetCustomerShareBalanceInstantiatedErrors($shareToUser, $creditsToShare) 
+    {
+        $customerShareBalance = $this->customer->getCustomerShareBalance();
+        $customerShareBalance->setShareToUser($shareToUser);
+        $customerShareBalance->setCreditsToShare($creditsToShare);
+
+        $this->customer->setCustomerShareBalance($customerShareBalance);
+    }
+
     public function testSetCustomerShareBalance() 
     {
         $customerId = self::CUSTOMER_ID;
         $customerShareBalance = $this->customer->getCustomerShareBalance();
+        $customerShareBalance->setShareToUser(15);
+        $customerShareBalance->setCreditsToShare(150);
+
         $response = $this->customer->setCustomerShareBalance($customerShareBalance);
         $this->assertEquals($response['resource'], "customers/$customerId/balance");
         $this->assertEquals(count($response['data']), 3);
@@ -162,4 +178,19 @@ class CustomerPrimitiveTest extends \PHPUnit_Framework_TestCase
           array('"5" : "22"')
         );
     }
+
+    /**
+    * ++++++++++ CustomerShareBalance Providers ++++++++++
+    */
+
+    public function customerShareBalanceErrorProvider()
+    {
+        return array(
+          array(5, null),
+          array(5, ""),
+          array(null, 5),
+          array("a", 5),
+        );
+    }
+
 }

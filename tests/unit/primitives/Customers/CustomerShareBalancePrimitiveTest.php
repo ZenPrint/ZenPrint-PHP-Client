@@ -3,9 +3,10 @@
 class CustomerShareBalancePrimitiveTest extends PHPUnit_Framework_TestCase 
 {
     const SHARE_TO_USER = 2;
-    const CREDITS_TO_SHARE = 92.50;
+    const SHARE_TO_USER_EMAIL = 'dave.boyce@zenprint.world.us.universe.ci.com';
+    const CREDITS_TO_SHARE = 192;
     const COMMENT = 'By Away';
-    const CUSTOMER_SHARE_BALANCE_JSON = '{"share_to_user":2,"credits_to_share":92.5,"comment":"By Away"}';
+    const CUSTOMER_SHARE_BALANCE_JSON = '{"share_to_user":2,"credits_to_share":192,"comment":"By Away"}';
 
     protected $_customerShareBalanceArray = array ( 
         'share_to_user' => self::SHARE_TO_USER,
@@ -17,7 +18,14 @@ class CustomerShareBalancePrimitiveTest extends PHPUnit_Framework_TestCase
         $this->_customerShareBalance = new CustomerShareBalance();
     }
 
-    public function testSetShareToUser() 
+    public function testSetShareToUserByEmail() 
+    {
+        $customerShareBalance = new CustomerShareBalance();
+        $customerShareBalance->setShareToUser(self::SHARE_TO_USER_EMAIL);
+        $this->assertEquals($customerShareBalance->getShareToUser(), self::SHARE_TO_USER_EMAIL);
+    }
+
+    public function testSetShareToUserById() 
     {
         $customerShareBalance = new CustomerShareBalance();
         $customerShareBalance->setShareToUser(self::SHARE_TO_USER);
@@ -30,13 +38,22 @@ class CustomerShareBalancePrimitiveTest extends PHPUnit_Framework_TestCase
     * @dataProvider integerErrorProvider
     * @expectedException        Assert\InvalidArgumentException
     */
-    public function testShareToUserErrors($customerId) 
+    public function testShareToUserErrorsById($shareToUser) 
     {
-        $this->_customerShareBalance->setShareToUser($customerId);
+        $this->_customerShareBalance->setShareToUser($shareToUser);
     }
 
     /**
-    * @depends testSetShareToUser
+    * @dataProvider emailErrorProvider
+    * @expectedException        Assert\InvalidArgumentException
+    */
+    public function testShareToUserErrorsByEmail($shareToUser) 
+    {
+        $this->_customerShareBalance->setShareToUser($shareToUser);
+    }
+
+    /**
+    * @depends testSetShareToUserById
     */
     public function testCreditsToShare(CustomerShareBalance $customerShareBalance) 
     {
@@ -47,7 +64,7 @@ class CustomerShareBalancePrimitiveTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-    * @dataProvider floatErrorProvider
+    * @dataProvider integerErrorProvider
     * @expectedException        Assert\InvalidArgumentException
     */
     public function testCreditsToShareErrors($creditsToShare) 
@@ -117,20 +134,6 @@ class CustomerShareBalancePrimitiveTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-    * ++++++++++ Float Providers ++++++++++
-    */
-
-    public function floatErrorProvider()
-    {
-        return array(
-          array("5"),
-          array(5),
-          array(""),
-          array(null),
-        );
-    }
-
-    /**
     * ++++++++++ String Providers ++++++++++
     */
 
@@ -142,6 +145,19 @@ class CustomerShareBalancePrimitiveTest extends PHPUnit_Framework_TestCase
           array([]),
           array(true),
           array(null),
+        );
+    }
+
+    /**
+    * ++++++++++ Email Providers ++++++++++
+    */
+
+    public function emailErrorProvider()
+    {
+        return array(
+          array('brian@'),
+          array('@'),
+          array('@pilat'),
         );
     }
 }

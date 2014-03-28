@@ -80,6 +80,7 @@ Class Customer
     public function setCustomerShareBalance($customerShareBalance)
     {
         Assertion::isInstanceOf($customerShareBalance, 'CustomerShareBalance');
+        $customerShareBalance->restValidation();
         $data = $customerShareBalance->toArray();
         /**
         * What does it return?

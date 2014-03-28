@@ -5,7 +5,7 @@ use Assert\Assertion;
 
 Class CustomerShareBalance
 {
-    private $shareToUserId = null;
+    private $shareToUser = null;
     private $creditsToShare = null;
     private $comment = null;
 
@@ -15,12 +15,16 @@ Class CustomerShareBalance
     }
 
     public function getShareToUser() {
-        return $this->shareToUserId;
+        return $this->shareToUser;
     }
 
-    public function setShareToUser($shareToUserId) {
-        Assertion::integer($shareToUserId);
-        $this->shareToUserId = $shareToUserId;
+    public function setShareToUser($shareToUser) {
+        if (preg_match('/@/', $shareToUser)) {
+            Assertion::email($shareToUser);
+        } else {
+            Assertion::integer($shareToUser);
+        }
+        $this->shareToUser = $shareToUser;
     }
 
     public function getCreditsToShare() {
@@ -28,11 +32,8 @@ Class CustomerShareBalance
     }
 
     public function setCreditsToShare($creditsToShare) {
-        Assertion::float($creditsToShare);
-        /**
-        * Assert with currency?
-        */
-        //Assertion::min($creditsToShare, 0);
+        Assertion::integer($creditsToShare);
+        Assertion::min($creditsToShare, 0);
         $this->creditsToShare = $creditsToShare;
     }
 
@@ -57,5 +58,10 @@ Class CustomerShareBalance
             'credits_to_share' => $this->getCreditsToShare(),
             'comment' => $this->getComment()
         );
+    }
+
+    public function restValidation() {
+        Assertion::notNull($this->getShareToUser());
+        Assertion::notNull($this->getCreditsToShare());
     }
 }
