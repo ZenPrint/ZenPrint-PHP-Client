@@ -29,6 +29,9 @@ Class CustomerShareBalance
 
     public function setCreditsToShare($creditsToShare) {
         Assertion::float($creditsToShare);
+        /**
+        * Assert with currency?
+        */
         //Assertion::min($creditsToShare, 0);
         $this->creditsToShare = $creditsToShare;
     }

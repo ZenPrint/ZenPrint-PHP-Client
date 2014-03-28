@@ -2,7 +2,6 @@
 
 namespace RESTful 
 {
-
     class RESTful 
     {
         private $returnValue = null;
@@ -28,7 +27,7 @@ namespace RESTful
                             "lastname": "Boyce"
                         }';
                     break;
-                case "customers/23/balance":
+                case "customers/22/balance":
                     $this->returnValue = '{
                             "credit_total": "101.56"
                         }';
@@ -62,7 +61,6 @@ namespace RESTful
         }
     }
 
-
     class CustomersPrimitiveTest extends \PHPUnit_Framework_TestCase 
     {
 
@@ -72,7 +70,6 @@ namespace RESTful
         const FIRST_NAME = 'Dave';
         const LAST_NAME = 'Boyce';
         const CUSTOMER_JSON = '{"email":"dave@zenprint.com","firstname":"Dave","lastname":"Boyce"}';
-        const CUSTOMER_BALANCE_CREDIT_TOTAL = 101.56;
 
         protected $_customerArray = array ( 
             'email' => self::EMAIL,
@@ -132,7 +129,7 @@ namespace RESTful
         public function testUpdateCustomer() 
         {
             $customerId = self::CUSTOMER_ID;
-            $customer = new \Customer(self::CUSTOMER_ID, $this->_customerArray);
+            $customer = new \Customer(self::OAUTH_HASH, self::CUSTOMER_ID, $this->_customerArray);
             $response = $this->_Customers->updateCustomer($customerId, $customer);
             $this->assertEquals($response['resource'], "customers/$customerId");
             $this->assertEquals(count($response['data']), 3);
@@ -153,7 +150,7 @@ namespace RESTful
 
         public function testCreateCustomer() 
         {
-            $customer = new \Customer(self::CUSTOMER_ID, $this->_customerArray);
+            $customer = new \Customer(self::OAUTH_HASH, self::CUSTOMER_ID, $this->_customerArray);
             $response = $this->_Customers->createCustomer($customer);
             $this->assertEquals($response['resource'], "customers");
             $this->assertEquals(count($response['data']), 3);
@@ -174,51 +171,9 @@ namespace RESTful
 
         public function testDeleteCustomer() 
         {
-            $customer = new \Customer(self::CUSTOMER_ID, $this->_customerArray);
+            $customer = new \Customer(self::OAUTH_HASH, self::CUSTOMER_ID, $this->_customerArray);
             $response = $this->_Customers->deleteCustomer($customer);
             $this->assertEquals($response['resource'], "customers/" . self::CUSTOMER_ID);
-        }
-
-        /**
-        * ++++++++++ getCustomerBalance ++++++++++
-        */
-
-        /**
-        * @dataProvider integerErrorProvider
-        * @expectedException        Assert\InvalidArgumentException
-        */
-        public function testGetCustomerBalanceErrors($customerId) 
-        {
-            $this->_Customers->getCustomerBalance($customerId);
-        }
-
-        public function testGetCustomerBalance() 
-        {
-            $customerId = self::CUSTOMER_ID;
-            $customerBalance = $this->_Customers->getCustomerBalance($customerId);
-            $this->assertEquals($customerBalance->getCreditTotal(), self::CUSTOMER_BALANCE_CREDIT_TOTAL);
-        }
-
-        /**
-        * ++++++++++ setCustomerBalance ++++++++++
-        */
-
-        /**
-        * @dataProvider customerAndJsonErrorProvider
-        * @expectedException        Assert\InvalidArgumentException
-        */
-        public function testSetCustomerBalanceErrors($customerId, $customerShareBalance) 
-        {
-            $this->_Customers->setCustomerBalance($customerId, $customerShareBalance);
-        }
-
-        public function testSetCustomerBalance() 
-        {
-            $customerId = self::CUSTOMER_ID;
-            $customerShareBalance = new \CustomerShareBalance();
-            $response = $this->_Customers->setCustomerBalance($customerId, $customerShareBalance);
-            $this->assertEquals($response['resource'], "customers/$customerId/balance");
-            $this->assertEquals(count($response['data']), 3);
         }
 
         /**

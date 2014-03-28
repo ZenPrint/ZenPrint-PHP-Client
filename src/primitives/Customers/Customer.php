@@ -3,17 +3,19 @@
 use RESTful\RESTful;
 use Assert\Assertion;
 
-Class Customer
+Class Customer 
 {
+    private $resource;
     private $id = null;
     private $email = null;
     private $firstName = null;
     private $lastName = null;
 
-    function __construct($customerId, $customerArray) 
+    function __construct($token, $customerId, $customerArray) 
     {
         Assertion::integer($customerId);
         Assertion::isArray($customerArray);
+        $this->resource = new RESTful('http://api.zenprint.com/api/rest/v1.0', $token);
         $this->parseCustomer($customerId, $customerArray);
     }
 
@@ -61,6 +63,28 @@ Class Customer
             'firstname' => $this->getFirstName(),
             'lastname' => $this->getLastName()
         );
+    }
+
+    public function getCustomerBalance()
+    {
+        return new CustomerBalance (
+            json_decode((string) $this->resource->get("customers/{$this->getId()}/balance"), true)
+        );
+    }
+
+    public function getCustomerShareBalance()
+    {
+        return new CustomerShareBalance();
+    }
+
+    public function setCustomerShareBalance($customerShareBalance)
+    {
+        Assertion::isInstanceOf($customerShareBalance, 'CustomerShareBalance');
+        $data = $customerShareBalance->toArray();
+        /**
+        * What does it return?
+        */
+        return $this->resource->put("customers/{$this->getId()}/balance", $data);
     }
 
     private function parseCustomer($customerId, $customerArray) {

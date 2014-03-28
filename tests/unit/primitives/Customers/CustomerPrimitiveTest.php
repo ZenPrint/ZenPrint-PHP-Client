@@ -1,13 +1,17 @@
 <?php
 
-class CustomerPrimitiveTest extends PHPUnit_Framework_TestCase 
+use RESTful\RESTful;
+
+class CustomerPrimitiveTest extends \PHPUnit_Framework_TestCase 
 {
 
+    const OAUTH_HASH = '22';
     const EMAIL = 'dave@zenprint.com';
     const FIRST_NAME = 'Dave';
     const LAST_NAME = 'Boyce';
     const CUSTOMER_ID = 22;
     const CUSTOMER_JSON = '{"email":"dave@zenprint.com","firstname":"Dave","lastname":"Boyce"}';
+    const CUSTOMER_BALANCE_CREDIT_TOTAL = 101.56;
 
     protected $_customerArray = array ( 
         'email' => self::EMAIL,
@@ -18,7 +22,7 @@ class CustomerPrimitiveTest extends PHPUnit_Framework_TestCase
 
     public function setUp() 
     {
-        $this->customer = new Customer(self::CUSTOMER_ID, $this->_customerArray);
+        $this->customer = new \Customer(self::OAUTH_HASH, self::CUSTOMER_ID, $this->_customerArray);
     }
 
     /**
@@ -27,7 +31,7 @@ class CustomerPrimitiveTest extends PHPUnit_Framework_TestCase
     */
     public function testCustomerErrors($customerId, $customerArray) 
     {
-        new Customer($customerId, $customerArray);
+        new \Customer(self::OAUTH_HASH, $customerId, $customerArray);
     }
 
     public function testGetCustomerId() 
@@ -94,6 +98,44 @@ class CustomerPrimitiveTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+    * ++++++++++ getCustomerBalance ++++++++++
+    */
+
+    public function testGetCustomerBalance() 
+    {
+        $customerBalance = $this->customer->getCustomerBalance();
+        $this->assertEquals($customerBalance->getCreditTotal(), self::CUSTOMER_BALANCE_CREDIT_TOTAL);
+    }
+
+    /**
+    * ++++++++++ CustomerShareBalance ++++++++++
+    */
+
+    public function testGetCustomerShareBalance() 
+    {
+        $customerShareBalance = $this->customer->getCustomerShareBalance();
+        $this->assertInstanceOf("CustomerShareBalance", $customerShareBalance);
+    }
+
+    /**
+    * @dataProvider jsonErrorProvider
+    * @expectedException        Assert\InvalidArgumentException
+    */
+    public function testSetCustomerShareBalanceErrors($customerShareBalance) 
+    {
+        $this->customer->setCustomerShareBalance($customerShareBalance);
+    }
+
+    public function testSetCustomerShareBalance() 
+    {
+        $customerId = self::CUSTOMER_ID;
+        $customerShareBalance = $this->customer->getCustomerShareBalance();
+        $response = $this->customer->setCustomerShareBalance($customerShareBalance);
+        $this->assertEquals($response['resource'], "customers/$customerId/balance");
+        $this->assertEquals(count($response['data']), 3);
+    }
+
+    /**
     * ++++++++++ Error Providers ++++++++++
     */
 
@@ -105,6 +147,19 @@ class CustomerPrimitiveTest extends PHPUnit_Framework_TestCase
           array("5", []),
           array(null, []),
           array(5, null) 
+        );
+    }
+
+    /**
+    * ++++++++++ JSON Providers ++++++++++
+    */
+
+    public function jsonErrorProvider()
+    {
+        return array(
+          array("5,"),
+          array("5:"),
+          array('"5" : "22"')
         );
     }
 }

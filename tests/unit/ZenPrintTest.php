@@ -68,16 +68,6 @@ class ZenPrintTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(method_exists($this->_zenPrint, 'deleteCustomer'));
     }
 
-    public function testGetCustomerBalance() 
-    {
-        $this->assertTrue(method_exists($this->_zenPrint, 'getCustomerBalance'));
-    }
-
-    public function testSetCustomerBalance() 
-    {
-        $this->assertTrue(method_exists($this->_zenPrint, 'setCustomerBalance'));
-    }
-
     /**
     * ++++++++++ Providers ++++++++++
     */
