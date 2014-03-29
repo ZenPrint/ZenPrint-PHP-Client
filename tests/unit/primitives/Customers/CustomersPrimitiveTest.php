@@ -17,7 +17,8 @@ namespace RESTful
                             "email": "nate@zenprint.com",
                             "firstname": "Nate",
                             "lastname": "Jensen",
-                            "password": "1234567"
+                            "password": "1234567",
+                            "prefix": "Mr."
                         }
                     }';
                     break;
@@ -95,6 +96,7 @@ namespace RESTful
                 $this->assertEquals($customer->getFirstname(), "Nate");
                 $this->assertEquals($customer->getLastname(), "Jensen");
                 $this->assertEquals($customer->getPassword(), "1234567");
+                $this->assertEquals($customer->getPrefix(), "Mr.");
             }
         }
 

@@ -12,6 +12,7 @@ Class Customer
     private $firstName = null;
     private $lastName = null;
     private $password = null;
+    private $prefix = null;
 
     function __construct($token, $customerId, $customerArray=null) 
     {
@@ -68,6 +69,14 @@ Class Customer
         $this->password = $password;
     }
 
+    public function getPrefix() {
+        return $this->prefix;
+    }
+
+    public function setPrefix($prefix) {
+        $this->prefix = $prefix;
+    }
+
     public function toJson() {
         return json_encode (
             $this->toArray()
@@ -75,12 +84,16 @@ Class Customer
     }
 
     public function toArray() {
-        return array (
+        $customerArray = Array (
             'email' => $this->getEmail(),
             'firstname' => $this->getFirstName(),
             'lastname' => $this->getLastName(),
-            'password' => $this->getPassword()
+            'password' => $this->getPassword(),
         );
+
+        u::opt($customerArray, 'prefix', $this->getPrefix());
+
+        return $customerArray;
     }
 
     public function getCustomerBalance()
@@ -125,6 +138,7 @@ Class Customer
             $this->setFirstName(u::set('firstname', $customerArray));
             $this->setLastName(u::set('lastname', $customerArray));
             $this->setPassword(u::set('password', $customerArray));
+            $this->setPrefix(u::set('prefix', $customerArray));
         }
     }
 }

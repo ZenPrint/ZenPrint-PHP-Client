@@ -11,14 +11,16 @@ class CustomerPrimitiveTest extends \PHPUnit_Framework_TestCase
     const LAST_NAME = 'Boyce';
     const CUSTOMER_ID = 22;
     const PASSWORD = 'ab345ef';
-    const CUSTOMER_JSON = '{"email":"dave@zenprint.com","firstname":"Dave","lastname":"Boyce","password":"ab345ef"}';
+    const PREFIX = 'Mr';
+    const CUSTOMER_JSON = '{"email":"dave@zenprint.com","firstname":"Dave","lastname":"Boyce","password":"ab345ef","prefix":"Mr"}';
     const CUSTOMER_BALANCE_CREDIT_TOTAL = 101.56;
 
     protected $_customerArray = array ( 
         'email' => self::EMAIL,
         'firstname' => self::FIRST_NAME,
         'lastname' => self::LAST_NAME,
-        'password' => self::PASSWORD
+        'password' => self::PASSWORD,
+        'prefix' => self::PREFIX
     );
 
 
@@ -132,6 +134,18 @@ class CustomerPrimitiveTest extends \PHPUnit_Framework_TestCase
         $this->customer->setPassword($password);
     }
 
+    public function testGetCustomerPrefix() 
+    {
+        $this->assertEquals($this->customer->getPrefix(), self::PREFIX);
+    }
+
+    public function testSetCustomerPrefix() 
+    {
+        $prefix = 'Mrs.';
+        $this->customer->setPrefix($prefix);
+        $this->assertEquals($this->customer->getPrefix(), $prefix);
+    }
+
     public function testCustomerToJson() 
     {
         $jsonResponse = $this->customer->toJson();
@@ -141,11 +155,12 @@ class CustomerPrimitiveTest extends \PHPUnit_Framework_TestCase
     public function testCustomerToArray() 
     {
         $arrayResponse = $this->customer->toArray();
-        $this->assertEquals(count($arrayResponse), 4);
+        $this->assertEquals(count($arrayResponse), 5);
         $this->assertEquals($arrayResponse['email'], $this->_customerArray['email']);
         $this->assertEquals($arrayResponse['firstname'], $this->_customerArray['firstname']);
         $this->assertEquals($arrayResponse['lastname'], $this->_customerArray['lastname']);
         $this->assertEquals($arrayResponse['password'], $this->_customerArray['password']);
+        $this->assertEquals($arrayResponse['prefix'], $this->_customerArray['prefix']);
     }
 
     /**
