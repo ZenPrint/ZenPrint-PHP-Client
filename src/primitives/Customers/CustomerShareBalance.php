@@ -43,6 +43,7 @@ Class CustomerShareBalance
 
     public function setComment($comment) {
         Assertion::string($comment);
+        Assertion::notEmpty($comment);
         $this->comment = $comment;
     }
 

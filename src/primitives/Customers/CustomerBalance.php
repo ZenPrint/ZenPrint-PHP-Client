@@ -2,6 +2,7 @@
 
 use RESTful\RESTful;
 use Assert\Assertion;
+use Utils as u;
 
 Class CustomerBalance
 {
@@ -22,6 +23,6 @@ Class CustomerBalance
     }
 
     private function parseCustomerBalance($customerBalanceArray) {
-       $this->setCreditTotal($customerBalanceArray['credit_total']);
+       $this->setCreditTotal(u::set('credit_total', $customerBalanceArray));
     }
 }

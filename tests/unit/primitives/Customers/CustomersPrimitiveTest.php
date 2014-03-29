@@ -16,7 +16,8 @@ namespace RESTful
                         "5": {
                             "email": "nate@zenprint.com",
                             "firstname": "Nate",
-                            "lastname": "Jensen"
+                            "lastname": "Jensen",
+                            "password": "1234567"
                         }
                     }';
                     break;
@@ -24,7 +25,8 @@ namespace RESTful
                     $this->returnValue = '{
                             "email": "dave@zenprint.com",
                             "firstname": "Dave",
-                            "lastname": "Boyce"
+                            "lastname": "Boyce",
+                            "password": "ab34d5e"
                         }';
                     break;
                 case "customers/22/balance":
@@ -69,12 +71,14 @@ namespace RESTful
         const EMAIL = 'dave@zenprint.com';
         const FIRST_NAME = 'Dave';
         const LAST_NAME = 'Boyce';
-        const CUSTOMER_JSON = '{"email":"dave@zenprint.com","firstname":"Dave","lastname":"Boyce"}';
+        const PASSWORD = 'ab345ef';
+        const CUSTOMER_JSON = '{"email":"dave@zenprint.com","firstname":"Dave","lastname":"Boyce","password":"ab34d5e"}';
 
         protected $_customerArray = array ( 
             'email' => self::EMAIL,
             'firstname' => self::FIRST_NAME,
-            'lastname' => self::LAST_NAME
+            'lastname' => self::LAST_NAME,
+            'password' => self::PASSWORD
         );
 
         public function setUp() 
@@ -90,6 +94,7 @@ namespace RESTful
                 $this->assertEquals($customer->getEmail(), "nate@zenprint.com");
                 $this->assertEquals($customer->getFirstname(), "Nate");
                 $this->assertEquals($customer->getLastname(), "Jensen");
+                $this->assertEquals($customer->getPassword(), "1234567");
             }
         }
 
@@ -112,27 +117,43 @@ namespace RESTful
             $customer = $this->_Customers->getCustomer($customerId);
             $this->assertEquals($customer->toJson(), self::CUSTOMER_JSON);
         }
+        
+        /**
+        * ++++++++++ getNewCustomer ++++++++++
+        */
+
+        public function testGetNewCustomer() 
+        {
+            $customer = $this->_Customers->getNewCustomer();
+            $this->assertInstanceOf("Customer", $customer);
+
+            $this->assertEquals($customer->getId(), 0);
+            $this->assertNull($customer->getFirstName());
+            $this->assertNull($customer->getLastName());
+            $this->assertNull($customer->getEmail());
+            $this->assertNull($customer->getPassword());
+        }
 
         /**
         * ++++++++++ Update Customer ++++++++++
         */
 
         /**
-        * @dataProvider customerAndJSONErrorProvider
+        * @dataProvider jsonErrorProvider
         * @expectedException        Assert\InvalidArgumentException
         */
-        public function testUpdateCustomerErrors($customerId, $customer) 
+        public function testUpdateCustomerErrors($customer) 
         {
-            $response = $this->_Customers->updateCustomer($customerId, $customer);
+            $response = $this->_Customers->updateCustomer($customer);
         }
 
         public function testUpdateCustomer() 
         {
             $customerId = self::CUSTOMER_ID;
             $customer = new \Customer(self::OAUTH_HASH, self::CUSTOMER_ID, $this->_customerArray);
-            $response = $this->_Customers->updateCustomer($customerId, $customer);
+            $response = $this->_Customers->updateCustomer($customer);
             $this->assertEquals($response['resource'], "customers/$customerId");
-            $this->assertEquals(count($response['data']), 3);
+            $this->assertEquals(count($response['data']), 4);
         }
 
         /**
@@ -153,7 +174,7 @@ namespace RESTful
             $customer = new \Customer(self::OAUTH_HASH, self::CUSTOMER_ID, $this->_customerArray);
             $response = $this->_Customers->createCustomer($customer);
             $this->assertEquals($response['resource'], "customers");
-            $this->assertEquals(count($response['data']), 3);
+            $this->assertEquals(count($response['data']), 4);
         }
 
         /**
@@ -204,16 +225,6 @@ namespace RESTful
               array("5,"),
               array("5:"),
               array('"5" : "22"')
-            );
-        }
-
-        public function customerAndJSONErrorProvider()
-        {
-            return array(
-              array("5", "5"),
-              array(5, "5,"),
-              array(5, "5:"),
-              array(5, '"5" : "22"')
             );
         }
     }

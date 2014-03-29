@@ -10,13 +10,15 @@ class CustomerPrimitiveTest extends \PHPUnit_Framework_TestCase
     const FIRST_NAME = 'Dave';
     const LAST_NAME = 'Boyce';
     const CUSTOMER_ID = 22;
-    const CUSTOMER_JSON = '{"email":"dave@zenprint.com","firstname":"Dave","lastname":"Boyce"}';
+    const PASSWORD = 'ab345ef';
+    const CUSTOMER_JSON = '{"email":"dave@zenprint.com","firstname":"Dave","lastname":"Boyce","password":"ab345ef"}';
     const CUSTOMER_BALANCE_CREDIT_TOTAL = 101.56;
 
     protected $_customerArray = array ( 
         'email' => self::EMAIL,
         'firstname' => self::FIRST_NAME,
-        'lastname' => self::LAST_NAME
+        'lastname' => self::LAST_NAME,
+        'password' => self::PASSWORD
     );
 
 
@@ -26,12 +28,12 @@ class CustomerPrimitiveTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-    * @dataProvider integerAndArrayErrorProvider
+    * @dataProvider integerErrorProvider
     * @expectedException        Assert\InvalidArgumentException
     */
-    public function testCustomerErrors($customerId, $customerArray) 
+    public function testCustomerErrors($customerId) 
     {
-        new \Customer(self::OAUTH_HASH, $customerId, $customerArray);
+        new \Customer(self::OAUTH_HASH, $customerId);
     }
 
     public function testGetCustomerId() 
@@ -58,6 +60,15 @@ class CustomerPrimitiveTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->customer->getEmail(), $customerEmail);
     }
 
+    /**
+    * @expectedException        Assert\InvalidArgumentException
+    */
+    public function testSetCustomerEmailError() 
+    {
+        $customerEmail = 'brian@howdy';
+        $this->customer->setEmail($customerEmail);
+    }
+
     public function testGetCustomerFirstName() 
     {
         $this->assertEquals($this->customer->getFirstName(), self::FIRST_NAME);
@@ -68,6 +79,15 @@ class CustomerPrimitiveTest extends \PHPUnit_Framework_TestCase
         $customerName = 'Jimbo';
         $this->customer->setFirstName($customerName);
         $this->assertEquals($this->customer->getFirstName(), $customerName);
+    }
+
+    /**
+    * @expectedException        Assert\InvalidArgumentException
+    */
+    public function testSetCustomerFirstNameError() 
+    {
+        $customerName = 5;
+        $this->customer->setFirstName($customerName);
     }
 
     public function testGetCustomerLastName() 
@@ -82,6 +102,36 @@ class CustomerPrimitiveTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->customer->getLastName(), $customerName);
     }
 
+    /**
+    * @expectedException        Assert\InvalidArgumentException
+    */
+    public function testSetCustomerLastNameError() 
+    {
+        $customerLastName = "";
+        $this->customer->setLastName($customerLastName);
+    }
+
+    public function testGetCustomerPassword() 
+    {
+        $this->assertEquals($this->customer->getPassword(), self::PASSWORD);
+    }
+
+    public function testSetCustomerPassword() 
+    {
+        $password = '7654321';
+        $this->customer->setPassword($password);
+        $this->assertEquals($this->customer->getPassword(), $password);
+    }
+
+    /**
+    * @dataProvider passwordErrorProvider
+    * @expectedException        Assert\InvalidArgumentException
+    */
+    public function testSetCustomerPasswordErrors($password) 
+    {
+        $this->customer->setPassword($password);
+    }
+
     public function testCustomerToJson() 
     {
         $jsonResponse = $this->customer->toJson();
@@ -91,10 +141,11 @@ class CustomerPrimitiveTest extends \PHPUnit_Framework_TestCase
     public function testCustomerToArray() 
     {
         $arrayResponse = $this->customer->toArray();
-        $this->assertEquals(count($arrayResponse), 3);
+        $this->assertEquals(count($arrayResponse), 4);
         $this->assertEquals($arrayResponse['email'], $this->_customerArray['email']);
         $this->assertEquals($arrayResponse['firstname'], $this->_customerArray['firstname']);
         $this->assertEquals($arrayResponse['lastname'], $this->_customerArray['lastname']);
+        $this->assertEquals($arrayResponse['password'], $this->_customerArray['password']);
     }
 
     /**
@@ -155,14 +206,13 @@ class CustomerPrimitiveTest extends \PHPUnit_Framework_TestCase
     * ++++++++++ Error Providers ++++++++++
     */
 
-    public function integerAndArrayErrorProvider()
+    public function integerErrorProvider()
     {
         return array(
-          array("5", "5"),
-          array(5, 5.1),
-          array("5", []),
-          array(null, []),
-          array(5, null) 
+          array("5"),
+          array(5.1),
+          array([]),
+          array(null),
         );
     }
 
@@ -176,6 +226,20 @@ class CustomerPrimitiveTest extends \PHPUnit_Framework_TestCase
           array("5,"),
           array("5:"),
           array('"5" : "22"')
+        );
+    }
+
+    /**
+    * ++++++++++ Password Providers ++++++++++
+    */
+
+    public function passwordErrorProvider()
+    {
+        return array(
+          array("123456"),
+          array(123456),
+          array(null),
+          array(""),
         );
     }
 

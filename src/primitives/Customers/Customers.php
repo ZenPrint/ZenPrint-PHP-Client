@@ -25,9 +25,18 @@ Class Customers
         return $this->customers;
     }
 
+    public function getNewCustomer() 
+    {
+        return new Customer($this->token, 0);
+    }
+
     public function createCustomer($customer)
     {
+        /**
+        * Todo Add the id when it returns
+        */
         Assertion::isInstanceOf($customer, 'Customer');
+        $customer->restValidation(false);
         $data = $customer->toArray();
         return $this->resource->post("customers", $data);
     }
@@ -42,15 +51,15 @@ Class Customers
         );
     }
 
-    public function updateCustomer($customerId, $customer)
+    public function updateCustomer($customer)
     {
-        Assertion::integer($customerId);
         Assertion::isInstanceOf($customer, 'Customer');
+        $customer->restValidation(true);
         $data = $customer->toArray();
         /**
         * What does it return?
         */
-        return $this->resource->put("customers/$customerId", $data);
+        return $this->resource->put("customers/{$customer->getId()}", $data);
     }
 
     public function deleteCustomer($customer)
