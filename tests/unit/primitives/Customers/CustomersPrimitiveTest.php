@@ -53,6 +53,8 @@ namespace RESTful
 
         function post($resource, $data) 
         {
+
+            //If the customer was created successfully, we receive Response HTTP Code = 200, empty Response Body and Location header like '/api/rest/v1.0/customers/555' where '555' - an entity id of the new customer. 
             return Array(
                 'resource' => $resource,
                 'data' => $data
