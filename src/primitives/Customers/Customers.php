@@ -25,11 +25,6 @@ Class Customers
         return $this->customers;
     }
 
-    public function getNewCustomer() 
-    {
-        return new Customer($this->token, 0);
-    }
-
     public function createCustomer($customer)
     {
         /**
@@ -38,7 +33,8 @@ Class Customers
         Assertion::isInstanceOf($customer, 'Customer');
         $customer->restValidation(false);
         $data = $customer->toArray();
-        return $this->resource->post("customers", $data);
+        $this->resource->post("customers", $data);
+        return $customer;
     }
 
     public function getCustomer($customerId)
@@ -59,7 +55,8 @@ Class Customers
         /**
         * What does it return?
         */
-        return $this->resource->put("customers/{$customer->getId()}", $data);
+        $this->resource->put("customers/{$customer->getId()}", $data);
+        return $customer;
     }
 
     public function deleteCustomer($customer)

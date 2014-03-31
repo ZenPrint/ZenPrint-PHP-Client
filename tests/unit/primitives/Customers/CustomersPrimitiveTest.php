@@ -131,22 +131,6 @@ namespace RESTful
         }
         
         /**
-        * ++++++++++ getNewCustomer ++++++++++
-        */
-
-        public function testGetNewCustomer() 
-        {
-            $customer = $this->_Customers->getNewCustomer();
-            $this->assertInstanceOf("Customer", $customer);
-
-            $this->assertEquals($customer->getId(), 0);
-            $this->assertNull($customer->getFirstName());
-            $this->assertNull($customer->getLastName());
-            $this->assertNull($customer->getEmail());
-            $this->assertNull($customer->getPassword());
-        }
-
-        /**
         * ++++++++++ Update Customer ++++++++++
         */
 
@@ -164,8 +148,7 @@ namespace RESTful
             $customerId = self::CUSTOMER_ID;
             $customer = new \Customer(self::OAUTH_HASH, self::CUSTOMER_ID, $this->_customerArray);
             $response = $this->_Customers->updateCustomer($customer);
-            $this->assertEquals($response['resource'], "customers/$customerId");
-            $this->assertEquals(count($response['data']), 8);
+            $this->assertInstanceOf("Customer", $response);
         }
 
         /**
@@ -183,10 +166,10 @@ namespace RESTful
 
         public function testCreateCustomer() 
         {
-            $customer = new \Customer(self::OAUTH_HASH, self::CUSTOMER_ID, $this->_customerArray);
+            $customer = new \Customer(self::OAUTH_HASH, 0, $this->_customerArray);
             $response = $this->_Customers->createCustomer($customer);
-            $this->assertEquals($response['resource'], "customers");
-            $this->assertEquals(count($response['data']), 8);
+            $this->assertInstanceOf("Customer", $response);
+            $this->assertEquals($response->getId(), 0);
         }
 
         /**

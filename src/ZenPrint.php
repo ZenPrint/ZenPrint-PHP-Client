@@ -18,7 +18,7 @@ Class ZenPrint extends ZenLogger {
             $args = $oAuthTokenSecret;
         }
 
-        if ($args) {
+        if (!is_null($args)) {
             Assertion::isArray($args, "You must supply an array for the args.");   
         }
 
@@ -40,6 +40,11 @@ Class ZenPrint extends ZenLogger {
     public function getCustomers() 
     {
         return $this->customersObject->getCustomers();
+    }
+
+    public function getNewCustomer() 
+    {
+        return new Customer($this->getOAuthToken(), 0);
     }
 
     public function createCustomer($customer) 
@@ -66,19 +71,23 @@ Class ZenPrint extends ZenLogger {
     * ++++++++++ Private Methods ++++++++++
     */
 
-    private function getOAuthToken() {
+    private function getOAuthToken()
+    {
         return $this->oAuthObject->getOAuthHash();
     }
 
-    private function instantiateCustomerObject() {
+    private function instantiateCustomerObject()
+    {
         $this->customersObject = new Customers($this->getOAuthToken());
     }
 
-    private function instantiateOAuth1Object($oAuthToken, $oAuthSecret) {
+    private function instantiateOAuth1Object($oAuthToken, $oAuthSecret)
+    {
         $this->oAuthObject = new OAuth1($oAuthToken, $oAuthSecret);
     }
 
-    private function instantiateOAuth2Object($tokenBearer) {
+    private function instantiateOAuth2Object($tokenBearer)
+    {
         $this->oAuthObject = new OAuth2($tokenBearer);
     }
 }

@@ -35,6 +35,21 @@ class CustomerPrimitiveTest extends \PHPUnit_Framework_TestCase
         $this->customer = new \Customer(self::OAUTH_HASH, self::CUSTOMER_ID, $this->_customerArray);
     }
 
+    public function testInstantiation()
+    {
+        $customer = new \Customer(22, 0);
+
+        $this->assertEquals($customer->getId(), 0);
+        $this->assertNull($customer->getFirstName());
+        $this->assertNull($customer->getLastName());
+        $this->assertNull($customer->getEmail());
+        $this->assertNull($customer->getPassword());
+        $this->assertNull($customer->getPrefix());
+        $this->assertNull($customer->getSuffix());
+        $this->assertNull($customer->getMiddleName());
+        $this->assertNull($customer->getTaxVat());
+    }
+
     /**
     * @dataProvider integerErrorProvider
     * @expectedException        Assert\InvalidArgumentException
