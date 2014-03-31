@@ -8,19 +8,25 @@ class CustomerPrimitiveTest extends \PHPUnit_Framework_TestCase
     const OAUTH_HASH = '22';
     const EMAIL = 'dave@zenprint.com';
     const FIRST_NAME = 'Dave';
+    const MIDDLE_NAME = 'CEOh';
     const LAST_NAME = 'Boyce';
     const CUSTOMER_ID = 22;
     const PASSWORD = 'ab345ef';
     const PREFIX = 'Mr';
-    const CUSTOMER_JSON = '{"email":"dave@zenprint.com","firstname":"Dave","lastname":"Boyce","password":"ab345ef","prefix":"Mr"}';
+    const SUFFIX = 'Sr';
+    const TAXVAT= 'IT777 6666 52';
+    const CUSTOMER_JSON = '{"email":"dave@zenprint.com","firstname":"Dave","lastname":"Boyce","password":"ab345ef","middlename":"CEOh","prefix":"Mr","suffix":"Sr","taxvat":"IT777 6666 52"}';
     const CUSTOMER_BALANCE_CREDIT_TOTAL = 101.56;
 
     protected $_customerArray = array ( 
         'email' => self::EMAIL,
         'firstname' => self::FIRST_NAME,
+        'middlename' => self::MIDDLE_NAME,
         'lastname' => self::LAST_NAME,
         'password' => self::PASSWORD,
-        'prefix' => self::PREFIX
+        'prefix' => self::PREFIX,
+        'suffix' => self::SUFFIX,
+        'taxvat' => self::TAXVAT
     );
 
 
@@ -92,6 +98,18 @@ class CustomerPrimitiveTest extends \PHPUnit_Framework_TestCase
         $this->customer->setFirstName($customerName);
     }
 
+    public function testGetCustomerMiddleName() 
+    {
+        $this->assertEquals($this->customer->getMiddleName(), self::MIDDLE_NAME);
+    }
+
+    public function testSetCustomerMiddleName() 
+    {
+        $middleName = 'Zeny';
+        $this->customer->setMiddleName($middleName);
+        $this->assertEquals($this->customer->getMiddleName(), $middleName);
+    }
+
     public function testGetCustomerLastName() 
     {
         $this->assertEquals($this->customer->getLastName(), self::LAST_NAME);
@@ -146,6 +164,30 @@ class CustomerPrimitiveTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->customer->getPrefix(), $prefix);
     }
 
+    public function testGetCustomerSuffix() 
+    {
+        $this->assertEquals($this->customer->getSuffix(), self::SUFFIX);
+    }
+
+    public function testSetCustomerSuffix() 
+    {
+        $suffix = 'Jr';
+        $this->customer->setSuffix($suffix);
+        $this->assertEquals($this->customer->getSuffix(), $suffix);
+    }
+
+    public function testGetCustomerTaxVat() 
+    {
+        $this->assertEquals($this->customer->getTaxVat(), self::TAXVAT);
+    }
+
+    public function testSetCustomerTaxVat() 
+    {
+        $taxVat = 'IT032 5780 516 75';
+        $this->customer->setTaxVat($taxVat);
+        $this->assertEquals($this->customer->getTaxVat(), $taxVat);
+    }
+
     public function testCustomerToJson() 
     {
         $jsonResponse = $this->customer->toJson();
@@ -155,12 +197,15 @@ class CustomerPrimitiveTest extends \PHPUnit_Framework_TestCase
     public function testCustomerToArray() 
     {
         $arrayResponse = $this->customer->toArray();
-        $this->assertEquals(count($arrayResponse), 5);
+        $this->assertEquals(count($arrayResponse), 8);
         $this->assertEquals($arrayResponse['email'], $this->_customerArray['email']);
         $this->assertEquals($arrayResponse['firstname'], $this->_customerArray['firstname']);
+        $this->assertEquals($arrayResponse['middlename'], $this->_customerArray['middlename']);
         $this->assertEquals($arrayResponse['lastname'], $this->_customerArray['lastname']);
         $this->assertEquals($arrayResponse['password'], $this->_customerArray['password']);
         $this->assertEquals($arrayResponse['prefix'], $this->_customerArray['prefix']);
+        $this->assertEquals($arrayResponse['suffix'], $this->_customerArray['suffix']);
+        $this->assertEquals($arrayResponse['taxvat'], $this->_customerArray['taxvat']);
     }
 
     /**
