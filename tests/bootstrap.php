@@ -36,9 +36,6 @@ echo "
 ###################################################################################################
 ";
 
-
-echo "there";
-
     // Register the directory to your include files
     AutoLoader::registerDirectory('./src');
 ?>
