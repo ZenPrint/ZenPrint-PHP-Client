@@ -39,6 +39,10 @@ class ZenPrintTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($zenPrint);
     }
 
+    /**
+    * ++++++++++ Customers ++++++++++
+    */
+
     public function testGetCustomers() 
     {
         $this->assertTrue(method_exists($this->_zenPrint, 'getCustomers'));

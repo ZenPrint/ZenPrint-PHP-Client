@@ -7,25 +7,36 @@ Class Customers
 {
     private $resource;
     private $customers = [];
+    private $token;
 
     function __construct($token) 
     {
-        $this->resource = new RESTful('http://api.zenprint.com/api/rest/v1.0', $token);
+        $this->token = $token;
+        $this->resource = new RESTful('http://api.zenprint.com/api/rest/v1.0', $this->token);
     }
 
     public function getCustomers() 
     {
         $customers = json_decode((string) $this->resource->get('customers'), true);
         foreach($customers as $customerId => $customer) {
-            array_push($this->customers, new Customer($customerId, $customer));
+            array_push($this->customers, new Customer($this->token, $customerId, $customer));
         }
 
         return $this->customers;
     }
 
+    public function getNewCustomer() 
+    {
+        return new Customer($this->token, 0);
+    }
+
     public function createCustomer($customer)
     {
+        /**
+        * Todo Add the id when it returns
+        */
         Assertion::isInstanceOf($customer, 'Customer');
+        $customer->restValidation(false);
         $data = $customer->toArray();
         return $this->resource->post("customers", $data);
     }
@@ -34,17 +45,21 @@ Class Customers
     {
         Assertion::integer($customerId);
         return new Customer(
+            $this->token,
             $customerId, 
             json_decode((string) $this->resource->get("customers/$customerId"), true)
         );
     }
 
-    public function updateCustomer($customerId, $customer)
+    public function updateCustomer($customer)
     {
-        Assertion::integer($customerId);
         Assertion::isInstanceOf($customer, 'Customer');
+        $customer->restValidation(true);
         $data = $customer->toArray();
-        return $this->resource->put("customers/$customerId", $data);
+        /**
+        * What does it return?
+        */
+        return $this->resource->put("customers/{$customer->getId()}", $data);
     }
 
     public function deleteCustomer($customer)

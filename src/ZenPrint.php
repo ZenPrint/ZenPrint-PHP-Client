@@ -52,9 +52,9 @@ Class ZenPrint extends ZenLogger {
         return $this->customersObject->getCustomer($customerId);
     }
 
-    public function updateCustomer($customerId, $customer) 
+    public function updateCustomer($customer) 
     {
-        return $this->customersObject->updateCustomer($customerId, $customer);
+        return $this->customersObject->updateCustomer($customer);
     }
 
     public function deleteCustomer($customer) 
