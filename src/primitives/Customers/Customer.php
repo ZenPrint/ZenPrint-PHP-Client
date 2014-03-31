@@ -13,6 +13,9 @@ Class Customer
     private $lastName = null;
     private $password = null;
     private $prefix = null;
+    private $suffix = null;
+    private $middleName = null;
+    private $taxVat = null;
 
     function __construct($token, $customerId, $customerArray=null) 
     {
@@ -49,6 +52,14 @@ Class Customer
         $this->firstName = $firstName;
     }
 
+    public function getMiddleName() {
+        return $this->middleName;
+    }
+
+    public function setMiddleName($middleName) {
+        $this->middleName = $middleName;
+    }
+
     public function getLastName() {
         return $this->lastName;
     }
@@ -77,6 +88,22 @@ Class Customer
         $this->prefix = $prefix;
     }
 
+    public function getSuffix() {
+        return $this->suffix;
+    }
+
+    public function setSuffix($suffix) {
+        $this->suffix = $suffix;
+    }
+
+    public function getTaxVat() {
+        return $this->taxVat;
+    }
+
+    public function setTaxVat($taxVat) {
+        $this->taxVat= $taxVat;
+    }
+
     public function toJson() {
         return json_encode (
             $this->toArray()
@@ -91,7 +118,10 @@ Class Customer
             'password' => $this->getPassword(),
         );
 
+        u::opt($customerArray, 'middlename', $this->getMiddleName());
         u::opt($customerArray, 'prefix', $this->getPrefix());
+        u::opt($customerArray, 'suffix', $this->getSuffix());
+        u::opt($customerArray, 'taxvat', $this->getTaxVat());
 
         return $customerArray;
     }
@@ -136,9 +166,12 @@ Class Customer
         if ($customerArray) {
             $this->setEmail(u::set('email', $customerArray));
             $this->setFirstName(u::set('firstname', $customerArray));
+            $this->setMiddleName(u::set('middlename', $customerArray));
             $this->setLastName(u::set('lastname', $customerArray));
             $this->setPassword(u::set('password', $customerArray));
             $this->setPrefix(u::set('prefix', $customerArray));
+            $this->setSuffix(u::set('suffix', $customerArray));
+            $this->setTaxVat(u::set('taxvat', $customerArray));
         }
     }
 }

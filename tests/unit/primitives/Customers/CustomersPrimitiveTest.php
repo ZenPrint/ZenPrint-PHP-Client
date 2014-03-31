@@ -17,8 +17,7 @@ namespace RESTful
                             "email": "nate@zenprint.com",
                             "firstname": "Nate",
                             "lastname": "Jensen",
-                            "password": "1234567",
-                            "prefix": "Mr."
+                            "password": "1234567"
                         }
                     }';
                     break;
@@ -26,8 +25,12 @@ namespace RESTful
                     $this->returnValue = '{
                             "email": "dave@zenprint.com",
                             "firstname": "Dave",
+                            "middlename": "Da Man",
                             "lastname": "Boyce",
-                            "password": "ab34d5e"
+                            "password": "ab34d5e",
+                            "prefix": "Mr.",
+                            "suffix": "Sr",
+                            "taxvat": "GB999 9999 73"
                         }';
                     break;
                 case "customers/22/balance":
@@ -71,15 +74,23 @@ namespace RESTful
         const CUSTOMER_ID = 23;
         const EMAIL = 'dave@zenprint.com';
         const FIRST_NAME = 'Dave';
+        const MIDDLE_NAME= 'Da Man';
         const LAST_NAME = 'Boyce';
         const PASSWORD = 'ab345ef';
-        const CUSTOMER_JSON = '{"email":"dave@zenprint.com","firstname":"Dave","lastname":"Boyce","password":"ab34d5e"}';
+        const PREFIX = 'Exalted Ruler';
+        const SUFFIX = 'III';
+        const TAXVAT = 'GB888 7777 62';
+        const CUSTOMER_JSON = '{"email":"dave@zenprint.com","firstname":"Dave","lastname":"Boyce","password":"ab34d5e","middlename":"Da Man","prefix":"Mr.","suffix":"Sr","taxvat":"GB999 9999 73"}';
 
         protected $_customerArray = array ( 
             'email' => self::EMAIL,
             'firstname' => self::FIRST_NAME,
+            'middlename' => self::MIDDLE_NAME,
             'lastname' => self::LAST_NAME,
-            'password' => self::PASSWORD
+            'password' => self::PASSWORD,
+            'prefix' => self::PREFIX,
+            'suffix' => self::SUFFIX,
+            'taxvat' => self::TAXVAT
         );
 
         public function setUp() 
@@ -93,10 +104,9 @@ namespace RESTful
             $this->assertEquals(count($customers), 1);
             foreach ($customers as $customer) {
                 $this->assertEquals($customer->getEmail(), "nate@zenprint.com");
-                $this->assertEquals($customer->getFirstname(), "Nate");
-                $this->assertEquals($customer->getLastname(), "Jensen");
+                $this->assertEquals($customer->getFirstName(), "Nate");
+                $this->assertEquals($customer->getLastName(), "Jensen");
                 $this->assertEquals($customer->getPassword(), "1234567");
-                $this->assertEquals($customer->getPrefix(), "Mr.");
             }
         }
 
@@ -155,7 +165,7 @@ namespace RESTful
             $customer = new \Customer(self::OAUTH_HASH, self::CUSTOMER_ID, $this->_customerArray);
             $response = $this->_Customers->updateCustomer($customer);
             $this->assertEquals($response['resource'], "customers/$customerId");
-            $this->assertEquals(count($response['data']), 4);
+            $this->assertEquals(count($response['data']), 8);
         }
 
         /**
@@ -176,7 +186,7 @@ namespace RESTful
             $customer = new \Customer(self::OAUTH_HASH, self::CUSTOMER_ID, $this->_customerArray);
             $response = $this->_Customers->createCustomer($customer);
             $this->assertEquals($response['resource'], "customers");
-            $this->assertEquals(count($response['data']), 4);
+            $this->assertEquals(count($response['data']), 8);
         }
 
         /**
