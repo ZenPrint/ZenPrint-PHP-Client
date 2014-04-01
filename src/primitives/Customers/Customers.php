@@ -25,6 +25,11 @@ Class Customers
         return $this->customers;
     }
 
+    public function getNewCustomer() 
+    {
+        return new Customer($this->token, 0);
+    }
+
     public function createCustomer($customer)
     {
         /**

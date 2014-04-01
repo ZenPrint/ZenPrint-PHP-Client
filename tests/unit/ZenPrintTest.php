@@ -49,11 +49,6 @@ class ZenPrintTest extends PHPUnit_Framework_TestCase
 
     }
 
-    public function testGetNewCustomer() 
-    {
-        $this->assertInstanceOf('Customer', $this->_zenPrint->getNewCustomer());
-    }
-
     public function testCreateCustomer() 
     {
         $customer = $this->getNewCustomer();

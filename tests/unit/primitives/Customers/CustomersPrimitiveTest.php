@@ -116,6 +116,11 @@ namespace RESTful
         * ++++++++++ getCustomer ++++++++++
         */
 
+        public function testGetNewCustomer() 
+        {
+            $this->assertInstanceOf('Customer', $this->_Customers->getNewCustomer());
+        }
+
         /**
         * @dataProvider integerErrorProvider
         * @expectedException        Assert\InvalidArgumentException
