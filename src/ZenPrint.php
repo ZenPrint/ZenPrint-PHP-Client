@@ -39,7 +39,13 @@ Class ZenPrint extends ZenLogger {
 
     public function getCustomers() 
     {
-        return $this->customersObject->getCustomers();
+        try {
+            return $this->customersObject->getCustomers();
+        } catch (Exception $e) {
+            var_dump($e->getMessage());
+            $this->addError($e->getMessage());
+            return null;
+        }
     }
 
     public function createCustomer($customer) 

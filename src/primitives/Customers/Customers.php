@@ -18,8 +18,12 @@ Class Customers
     public function getCustomers() 
     {
         $customers = json_decode((string) $this->resource->get('customers'), true);
-        foreach($customers as $customerId => $customer) {
-            array_push($this->customers, new Customer($this->token, $customerId, $customer));
+        if ($this->resource->getHeaderResponseCode() === "200") {
+            foreach($customers as $customerId => $customer) {
+                array_push($this->customers, new Customer($this->token, $customerId, $customer));
+            }
+        } else {
+            throw new Exception('An Error Occurred.');
         }
 
         return $this->customers;

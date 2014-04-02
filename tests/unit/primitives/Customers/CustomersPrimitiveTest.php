@@ -67,6 +67,11 @@ namespace RESTful
                 'resource' => $resource
             );
         }
+
+        function getHeaderResponseCode()
+        {
+            return "200";
+        }
     }
 
     class CustomersPrimitiveTest extends \PHPUnit_Framework_TestCase 
