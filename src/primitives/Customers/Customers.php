@@ -18,8 +18,12 @@ Class Customers
     public function getCustomers() 
     {
         $customers = json_decode((string) $this->resource->get('customers'), true);
-        foreach($customers as $customerId => $customer) {
-            array_push($this->customers, new Customer($this->token, $customerId, $customer));
+        if ($this->resource->getHeaderResponseCode() === "200") {
+            foreach($customers as $customerId => $customer) {
+                array_push($this->customers, new Customer($this->token, $customerId, $customer));
+            }
+        } else {
+            throw new Exception('An Error Occurred.');
         }
 
         return $this->customers;
@@ -38,7 +42,8 @@ Class Customers
         Assertion::isInstanceOf($customer, 'Customer');
         $customer->restValidation(false);
         $data = $customer->toArray();
-        return $this->resource->post("customers", $data);
+        $this->resource->post("customers", $data);
+        return $customer;
     }
 
     public function getCustomer($customerId)
@@ -59,7 +64,8 @@ Class Customers
         /**
         * What does it return?
         */
-        return $this->resource->put("customers/{$customer->getId()}", $data);
+        $this->resource->put("customers/{$customer->getId()}", $data);
+        return $customer;
     }
 
     public function deleteCustomer($customer)

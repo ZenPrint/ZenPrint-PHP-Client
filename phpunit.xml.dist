@@ -19,4 +19,13 @@
   <logging>
     <log type="coverage-html" target="test-reports" charset="UTF-8" yui="true" />
   </logging>
+
+  <filter>
+    <whitelist addUncoveredFilesFromWhitelist="true">
+      <directory suffix=".php">src</directory>
+      <exclude>
+        <file>src/AutoLoader.php</file>
+      </exclude>
+    </whitelist>
+  </filter>
 </phpunit>

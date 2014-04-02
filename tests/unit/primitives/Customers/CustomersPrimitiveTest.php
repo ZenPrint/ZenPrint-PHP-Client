@@ -53,6 +53,8 @@ namespace RESTful
 
         function post($resource, $data) 
         {
+
+            //If the customer was created successfully, we receive Response HTTP Code = 200, empty Response Body and Location header like '/api/rest/v1.0/customers/555' where '555' - an entity id of the new customer. 
             return Array(
                 'resource' => $resource,
                 'data' => $data
@@ -64,6 +66,11 @@ namespace RESTful
             return Array(
                 'resource' => $resource
             );
+        }
+
+        function getHeaderResponseCode()
+        {
+            return "200";
         }
     }
 
@@ -114,6 +121,11 @@ namespace RESTful
         * ++++++++++ getCustomer ++++++++++
         */
 
+        public function testGetNewCustomer() 
+        {
+            $this->assertInstanceOf('Customer', $this->_Customers->getNewCustomer());
+        }
+
         /**
         * @dataProvider integerErrorProvider
         * @expectedException        Assert\InvalidArgumentException
@@ -130,22 +142,6 @@ namespace RESTful
             $this->assertEquals($customer->toJson(), self::CUSTOMER_JSON);
         }
         
-        /**
-        * ++++++++++ getNewCustomer ++++++++++
-        */
-
-        public function testGetNewCustomer() 
-        {
-            $customer = $this->_Customers->getNewCustomer();
-            $this->assertInstanceOf("Customer", $customer);
-
-            $this->assertEquals($customer->getId(), 0);
-            $this->assertNull($customer->getFirstName());
-            $this->assertNull($customer->getLastName());
-            $this->assertNull($customer->getEmail());
-            $this->assertNull($customer->getPassword());
-        }
-
         /**
         * ++++++++++ Update Customer ++++++++++
         */
@@ -164,8 +160,7 @@ namespace RESTful
             $customerId = self::CUSTOMER_ID;
             $customer = new \Customer(self::OAUTH_HASH, self::CUSTOMER_ID, $this->_customerArray);
             $response = $this->_Customers->updateCustomer($customer);
-            $this->assertEquals($response['resource'], "customers/$customerId");
-            $this->assertEquals(count($response['data']), 8);
+            $this->assertInstanceOf("Customer", $response);
         }
 
         /**
@@ -183,10 +178,10 @@ namespace RESTful
 
         public function testCreateCustomer() 
         {
-            $customer = new \Customer(self::OAUTH_HASH, self::CUSTOMER_ID, $this->_customerArray);
+            $customer = new \Customer(self::OAUTH_HASH, 0, $this->_customerArray);
             $response = $this->_Customers->createCustomer($customer);
-            $this->assertEquals($response['resource'], "customers");
-            $this->assertEquals(count($response['data']), 8);
+            $this->assertInstanceOf("Customer", $response);
+            $this->assertEquals($response->getId(), 0);
         }
 
         /**

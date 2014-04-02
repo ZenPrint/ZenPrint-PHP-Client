@@ -43,29 +43,33 @@ class ZenPrintTest extends PHPUnit_Framework_TestCase
     * ++++++++++ Customers ++++++++++
     */
 
-    public function testGetCustomers() 
+    public function testGetCustomers()
     {
-        $this->assertTrue(method_exists($this->_zenPrint, 'getCustomers'));
+        $this->assertInternalType('array', $this->_zenPrint->getCustomers());
+
     }
 
     public function testCreateCustomer() 
     {
-        $this->assertTrue(method_exists($this->_zenPrint, 'createCustomer'));
+        $customer = $this->getNewCustomer();
+        $this->assertInstanceOf('Customer',$this->_zenPrint->createCustomer($customer));
     }
 
     public function testGetCustomer() 
     {
-        $this->assertTrue(method_exists($this->_zenPrint, 'getCustomer'));
+        $this->assertInstanceOf('Customer', $this->_zenPrint->getCustomer(22));
     }
 
     public function testUpdateCustomer() 
     {
-        $this->assertTrue(method_exists($this->_zenPrint, 'updateCustomer'));
+        $customer = $this->getNewCustomer();
+        $this->assertInstanceOf('Customer', $this->_zenPrint->updateCustomer($customer));
     }
 
     public function testDeleteCustomer() 
     {
-        $this->assertTrue(method_exists($this->_zenPrint, 'deleteCustomer'));
+        $customer = $this->getNewCustomer();
+        $this->assertInternalType('array', $this->_zenPrint->deleteCustomer($customer));
     }
 
     /**
@@ -94,5 +98,16 @@ class ZenPrintTest extends PHPUnit_Framework_TestCase
           array("5", "5", 1),
           array("5", array('2')),
         );
+    }
+
+    private function getNewCustomer() 
+    {
+        $customer = new Customer('5', 5);
+        $customer->setFirstName('Mock');
+        $customer->setLastName('Mock');
+        $customer->setEmail('Mock@mock.com');
+        $customer->setPassword('Mocking');
+
+        return $customer;
     }
 }
