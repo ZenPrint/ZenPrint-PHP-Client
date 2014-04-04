@@ -13,6 +13,8 @@ EOT
 }
 
 include join('/', array(__DIR__, '..', 'src', 'AutoLoader.php'));
+include join('/', array(__DIR__, 'unit', 'artifacts', 'RESTfulMock.php'));
+include join('/', array(__DIR__, 'unit', 'artifacts', 'Globals.php'));
 
 /**
 * http://www.kammerl.de/ascii/AsciiSignature.php

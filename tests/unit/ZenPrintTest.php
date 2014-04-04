@@ -46,13 +46,25 @@ class ZenPrintTest extends PHPUnit_Framework_TestCase
     public function testGetCustomers()
     {
         $this->assertInternalType('array', $this->_zenPrint->getCustomers());
+    }
 
+    public function testGetCustomersError()
+    {
+        $GLOBALS['headerResponseCode'] = '403';
+        $this->assertNull($this->_zenPrint->getCustomers());
     }
 
     public function testCreateCustomer() 
     {
         $customer = $this->getNewCustomer();
         $this->assertInstanceOf('Customer',$this->_zenPrint->createCustomer($customer));
+    }
+
+    public function testCreateCustomerError() 
+    {
+        $GLOBALS['headerLocation'] = '/this/is/not/write';
+        $customer = $this->getNewCustomer();
+        $this->assertNull($this->_zenPrint->createCustomer($customer));
     }
 
     public function testGetCustomer() 

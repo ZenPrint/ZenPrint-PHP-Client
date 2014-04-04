@@ -42,6 +42,22 @@ $customer->lastName = "Last Name";
 $zenPrint->createCustomer($customer);
 ```
 
+Logging
+-------
+ZenPrint uses Monolog
+
+```
+$args = array (
+  'logging' => array (
+    'handler' => 'StreamHandler',
+    'name' => '<project name>',
+    'file' => '<path_to_file>'
+  )
+)
+
+$zenPrint = new ZenPrint(<oauth_token>, <oauth_token_secret>, $args);
+```
+
 
 How to Run the Unit Tests
 -------------------------
